@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body class="container">
+    <header><%- include('../partials/header', {variant: 'compact'}); %></header>
+
+    <main>
+      <h1>All Route</h1>
+      <ul>
+        <li>/users</li>
+        <dd>this route will return all users in DB</dd>
+        <li>/users/get/:user_id</li>
+        <dd>this route require a parameter which is the user ID, it return user thats its associated with that ID</dd>
+        <li>/users/register</li>
+        <dd>
+          its used to create new user... eg 
+          <pre><%= user %> 
+          </pre>
+          <p>These are the requirement, _id is exception</p>
+        </dd>
+        <li>/users/login/</li>
+        <dd>
+          this is used to authenticate user it require password and email to authenticate user
+        </dd>
+      </ul>
+    </main>
+    <footer><%- include('../partials/footer', {name: 'Jafar'}); %></footer>
+  </body>
+</html>

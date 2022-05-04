@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body class="container">
+    <header><%- include('../partials/header', {variant: 'compact'}); %></header>
+
+    <main>
+
+        <div id="message"></div>
+
+        <div class="form">
+            <input type="email" name="email" placeholder="email">
+            <input type="text" name="username" placeholder="username">
+            <input type="text" name="first_name" placeholder="first name">
+            <input type="text" name="last_name" placeholder="last name">
+            <input type="password" name="password" placeholder="password">
+            <input type="submit" id="submit">
+        </div>
+
+    </main>
+    
+    <footer><%- include('../partials/footer', {name: 'Jafar'}); %></footer>
+
+    <script>
+        const submit  = document.querySelector('#submit')
+
+        submit.addEventListener('click', (form) => {
+            const password = document.querySelector('[name="password"]')
+            const email = document.querySelector('[name="email"]')
+            const first_name = document.querySelector('[name="first_name"]')
+            const last_name = document.querySelector('[name="last_name"]')
+            const username = document.querySelector('[name="username"]')
+            fetch('/users/register', {
+                method:'POST',
+                headers: {
+                    "Content-Type" : 'application/json'
+                },
+                body: JSON.stringify({
+                    password: password.value,
+                    email: email.value,
+                    last_name: last_name.value,
+                    first_name: first_name.value,
+                    username: username.value,
+                })
+            }).then(res => res.json())
+            .then(data => {
+                const messageDiv = document.querySelector('#message')
+                messageDiv.innerHTML = ''
+               
+                if(data.error){
+                    const ErrorDiv = document.createElement('h2')
+                    
+                    ErrorDiv.innerText = data.error
+                    messageDiv.append(ErrorDiv)
+                    return
+                }
+                if(data.success === true){
+                    
+                    const responseDiv = document.createElement('h2')
+                    responseDiv.textContent = data.data
+                    messageDiv.append(responseDiv)
+                    return
+                }
+                const responseDiv = document.createElement('h2')
+
+         
+                responseDiv.textContent = data.message
+                messageDiv.append(responseDiv)
+
+            })
+        })
+    </script>
+  </body>
+</html>

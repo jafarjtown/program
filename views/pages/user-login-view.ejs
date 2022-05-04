@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body class="container">
+    <header><%- include('../partials/header', {variant: 'compact'}); %></header>
+
+    <main>
+
+        <div id="message"></div>
+
+        <div class="form">
+            <input type="email" name="email" placeholder="Email">
+            <input type="password" name="password" placeholder="Password">
+            <input type="submit" id="submit">
+        </div>
+
+    </main>
+    
+    <footer><%- include('../partials/footer', {name: 'Jafar'}); %></footer>
+
+    <script>
+        const submit  = document.querySelector('#submit')
+
+        submit.addEventListener('click', (form) => {
+            const password = document.querySelector('[name="password"]')
+            const email = document.querySelector('[name="email"]')
+            fetch('/users/login', {
+                method:'POST',
+                headers: {
+                    "Content-Type" : 'application/json'
+                },
+                body: JSON.stringify({
+                    password: password.value,
+                    email: email.value
+                })
+            }).then(res => res.json())
+            .then(data => {
+                const messageDiv = document.querySelector('#message')
+                
+                
+                if(data.error){
+                    const ErrorDiv  = document.createElement('h2')
+                    ErrorDiv.innerText = data.error
+                    messageDiv.append(ErrorDiv)
+                    return
+                }
+                if(data.token){
+                    const responseDiv  = document.createElement('h2')
+                    
+                    
+                    responseDiv.textContent = data.token
+                    messageDiv.append(responseDiv)
+                    return
+                }
+                const responseDiv  = document.createElement('h2')
+                
+                responseDiv.textContent = data.message
+                messageDiv.append(responseDiv)
+            })
+        })
+    </script>
+  </body>
+</html>
